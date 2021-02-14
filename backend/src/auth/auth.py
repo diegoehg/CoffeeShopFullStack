@@ -31,11 +31,17 @@ class AuthError(Exception):
     return the token part of the header
 '''
 def get_token_auth_header():
-    if not request.headers.has_key('Authorization'):
+    auth = request.headers.get('Authorization', None)
+
+    if not auth:
         raise AuthError('Request does not contain authorization header', 401)
 
-    auth = request.headers.get('Authorization' ,'')
-    return auth.split()[1]
+    auth_parts = auth.split()
+
+    if auth_parts[0].lower() != 'bearer':
+        raise AuthError('Authorization header must start with Bearer', 401)
+
+    return auth_parts[1]
 
 '''
 @TODO implement check_permissions(permission, payload) method
