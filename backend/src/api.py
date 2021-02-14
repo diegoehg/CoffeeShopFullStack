@@ -43,6 +43,14 @@ def get_drinks():
     returns status code 200 and json {"success": True, "drinks": drinks} where drinks is the list of drinks
         or appropriate status code indicating reason for failure
 '''
+@app.route('/drinks-detail')
+@requires_auth('get:drinks-detail')
+def get_drinks_detail(payload):
+    print(payload)
+    return jsonify({
+        "success": True,
+        "drinks": [d.long() for d in Drink.query.all()]
+    })
 
 
 '''
@@ -114,3 +122,10 @@ def unprocessable(error):
 @TODO implement error handler for AuthError
     error handler should conform to general task above 
 '''
+@app.errorhandler(AuthError)
+def auth_error_handler(e):
+    return jsonify({
+        "success": False,
+        "error": e.status_code,
+        "message": e.error
+    }), e.status_code
