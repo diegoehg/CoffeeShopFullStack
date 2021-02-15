@@ -93,6 +93,26 @@ def post_drinks(payload):
     returns status code 200 and json {"success": True, "drinks": drink} where drink an array containing only the updated drink
         or appropriate status code indicating reason for failure
 '''
+@app.route('/drinks/<int:drink_id>', methods=['PATCH'])
+@requires_auth('patch:drinks')
+def patch_drink(payload, drink_id):
+
+    print([d for d in Drink.query.all()])
+
+    d = Drink.query.get_or_404(drink_id)
+    data = request.get_json()
+
+    try:
+        d.title = data['title']
+        d.update()
+
+        return jsonify({
+            "success": True,
+            "drinks": [d.long()]
+        })
+
+    except:
+        abort(422)
 
 
 '''
@@ -134,6 +154,13 @@ def unprocessable(error):
 @TODO implement error handler for 404
     error handler should conform to general task above 
 '''
+@app.errorhandler(404)
+def handle_not_found(error):
+    return jsonify({
+        "success": False,
+        "error": 404,
+        "message": "Resource not found"
+    }), 404
 
 
 '''
