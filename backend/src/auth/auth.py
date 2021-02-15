@@ -65,7 +65,7 @@ def check_permissions(permission, payload):
         raise AuthError('Permissions not included in JWT', 400)
 
     if permission not in payload['permissions']:
-        raise AuthError('Permission not found in JWT', 403)
+        raise AuthError('Permission not found in JWT', 401)
 
 
 '''
