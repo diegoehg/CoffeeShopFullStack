@@ -44,6 +44,9 @@ def get_token_auth_header():
     if len(auth_parts) == 1:
         raise AuthError('Authorization header has no token', 401)
 
+    if len(auth_parts) != 2:
+        raise AuthError('Authorization header must be bearer token', 401)
+
     return auth_parts[1]
 
 '''
