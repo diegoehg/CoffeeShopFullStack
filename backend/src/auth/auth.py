@@ -61,7 +61,12 @@ def get_token_auth_header():
     return true otherwise
 '''
 def check_permissions(permission, payload):
-    return True
+    if 'permissions' not in payload:
+        raise AuthError('Permissions not included in JWT', 400)
+
+    if permission not in payload['permissions']:
+        raise AuthError('Permission not found in JWT', 403)
+
 
 '''
 @TODO implement verify_decode_jwt(token) method
