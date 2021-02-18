@@ -9,18 +9,15 @@ AUTH0_DOMAIN = 'coffe-shop-project-dhdez.us.auth0.com'
 ALGORITHMS = ['RS256']
 API_AUDIENCE = 'coffee-shop-api'
 
-## AuthError Exception
-'''
-AuthError Exception
-A standardized way to communicate auth failure modes
-'''
+
+# AuthError Exception
 class AuthError(Exception):
     def __init__(self, error, status_code):
         self.error = error
         self.status_code = status_code
 
 
-## Auth Header
+# Auth Header
 
 def get_token_auth_header():
     auth = request.headers.get('Authorization', None)
@@ -84,7 +81,10 @@ def verify_decode_jwt(token):
             raise AuthError('Token expired.', 401)
 
         except jwt.JWTClaimsError:
-            raise AuthError('Incorrect claims. Please, check the audience and issuer.', 401)
+            raise AuthError(
+                    'Incorrect claims. Please, check the audience and issuer.',
+                    401
+            )
 
         except Exception:
             raise AuthError('Unable to parse authentication token.', 400)

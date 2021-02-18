@@ -13,7 +13,8 @@ CORS(app)
 
 db_drop_and_create_all()
 
-## ROUTES
+
+# ROUTES
 @app.route('/drinks')
 def get_drinks():
     return jsonify({
@@ -35,7 +36,7 @@ def get_drinks_detail(payload):
 @requires_auth('post:drinks')
 def post_drinks(payload):
     data = request.get_json()
-    
+
     try:
         d = Drink(
                 title=data['title'],
@@ -89,11 +90,11 @@ def delete_drink(payload, drink_id):
         abort(422)
 
 
-## Error Handling
+# Error Handling
 @app.errorhandler(422)
 def unprocessable(error):
     return jsonify({
-                    "success": False, 
+                    "success": False,
                     "error": 422,
                     "message": "unprocessable"
                     }), 422
