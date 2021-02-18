@@ -69,7 +69,7 @@ def post_drinks(payload):
     try:
         d = Drink(
                 title=data['title'],
-                recipe=json.dumps([data['recipe']])
+                recipe=json.dumps(data['recipe'])
         )
         d.insert()
 
